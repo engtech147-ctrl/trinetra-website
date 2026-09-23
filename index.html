@@ -1,0 +1,1584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TRINETRA | Hyperlocal Flash-Flood Risk Intelligence & Early Warning System</title>
+  <meta name="description" content="Trinetra combines multi-source environmental data, XGBoost-based AI/ML prediction and physics-informed validation to deliver continuous, explainable and actionable flash-flood warnings at the village/ward level.">
+
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: {
+              dark: '#0A1F44',
+              medium: '#1E4D8C',
+              light: '#235CA8',
+              slate: '#0F2B5C'
+            },
+            cyan: {
+              bright: '#2B8CFF',
+              accent: '#00B4D8'
+            },
+            water: {
+              soft: '#E8F2FF',
+              ice: '#F0F6FF',
+              badge: '#D6E8FE'
+            },
+            canvas: {
+              light: 'transparent'
+            }
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="bg-canvas-light text-slate-800 antialiased selection:bg-blue-100 selection:text-navy-dark">
+
+  <!-- =========================================================================
+       NAVIGATION BAR (Sticky Top Bar - Dark Navy)
+       ========================================================================= -->
+  <header id="navbar" class="sticky top-0 z-50 bg-navy-dark text-white border-b border-slate-800/80 transition-all duration-200">
+    <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- Official Logo + Brand Left -->
+        <a href="#hero" class="flex items-center group">
+          <div class="h-10 sm:h-12 bg-white rounded-lg p-1.5 shadow-sm border border-slate-700/50 transition-transform group-hover:scale-105 flex items-center justify-center">
+            <img src="assets/images/media_1790151783643.jpg" alt="TRINETRA Logo" class="h-full w-auto object-contain">
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Links (Exact order requested) -->
+        <nav class="hidden lg:flex items-center space-x-1 xl:space-x-2">
+          <a href="#problem" class="nav-link px-3.5 py-2 text-sm font-semibold text-slate-200 hover:text-white transition">Problem</a>
+          <a href="#solution" class="nav-link px-3.5 py-2 text-sm font-semibold text-slate-200 hover:text-white transition">Solution</a>
+          <a href="#how-it-works" class="nav-link px-3.5 py-2 text-sm font-semibold text-slate-200 hover:text-white transition">How it works</a>
+          <a href="#technology" class="nav-link px-3.5 py-2 text-sm font-semibold text-slate-200 hover:text-white transition">Technology</a>
+          <a href="#case-study" class="nav-link px-3.5 py-2 text-sm font-semibold text-slate-200 hover:text-white transition">Case Study</a>
+          <a href="#impact" class="nav-link px-3.5 py-2 text-sm font-semibold text-slate-200 hover:text-white transition">Impact</a>
+          <a href="#team" class="nav-link px-3.5 py-2 text-sm font-semibold text-slate-200 hover:text-white transition">Team</a>
+          <a href="#mentors" class="nav-link px-3.5 py-2 text-sm font-semibold text-slate-200 hover:text-white transition">Mentors</a>
+          
+          <a href="#how-it-works" class="ml-4 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-cyan-bright hover:bg-blue-600 text-white text-xs font-bold uppercase tracking-wider transition-all shadow-md">
+            <i class="fa-solid fa-radar text-xs"></i>
+            Live System
+          </a>
+        </nav>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-lg text-slate-300 hover:text-white hover:bg-navy-medium focus:outline-none" aria-label="Toggle Navigation">
+          <i class="fa-solid fa-bars text-xl"></i>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-menu" class="hidden lg:hidden bg-navy-dark/95 border-b border-slate-700/80 px-4 pt-3 pb-6 space-y-1">
+      <a href="#problem" class="mobile-link block px-3 py-2.5 rounded-md text-base font-semibold text-slate-200 hover:bg-navy-medium">Problem</a>
+      <a href="#solution" class="mobile-link block px-3 py-2.5 rounded-md text-base font-semibold text-slate-200 hover:bg-navy-medium">Solution</a>
+      <a href="#how-it-works" class="mobile-link block px-3 py-2.5 rounded-md text-base font-semibold text-slate-200 hover:bg-navy-medium">How it works</a>
+      <a href="#technology" class="mobile-link block px-3 py-2.5 rounded-md text-base font-semibold text-slate-200 hover:bg-navy-medium">Technology</a>
+      <a href="#case-study" class="mobile-link block px-3 py-2.5 rounded-md text-base font-semibold text-slate-200 hover:bg-navy-medium">Case Study</a>
+      <a href="#impact" class="mobile-link block px-3 py-2.5 rounded-md text-base font-semibold text-slate-200 hover:bg-navy-medium">Impact</a>
+      <a href="#team" class="mobile-link block px-3 py-2.5 rounded-md text-base font-semibold text-slate-200 hover:bg-navy-medium">Team</a>
+      <a href="#mentors" class="mobile-link block px-3 py-2.5 rounded-md text-base font-semibold text-slate-200 hover:bg-navy-medium">Mentors</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- =========================================================================
+         HERO SECTION
+         Reduced top space above badge by half
+         ========================================================================= -->
+    <section id="hero" class="relative pt-3 pb-16 md:pt-8 md:pb-16 bg-topo-pattern overflow-hidden border-b border-slate-200/80">
+      
+      <!-- Subtle Ambient Decorative Glows -->
+      <div class="absolute top-6 left-1/4 w-96 h-96 bg-blue-100/40 rounded-full blur-3xl pointer-events-none -z-10"></div>
+      <div class="absolute bottom-6 right-10 w-80 h-80 bg-sky-100/50 rounded-full blur-3xl pointer-events-none -z-10"></div>
+
+      <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+          
+          <!-- Hero Left Column -->
+          <div class="lg:col-span-6 space-y-5">
+            
+            <!-- Ministry / NDRF Badge -->
+            <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white border border-slate-200/90 shadow-sm text-navy-medium text-[11px] sm:text-xs font-bold tracking-[0.1em] uppercase mb-1">
+              <span class="w-2.5 h-2.5 rounded-full bg-navy-medium animate-pulse"></span>
+              MINISTRY OF HOME AFFAIRS • NDRF / DM DIVISION
+            </div>
+
+            <!-- Large Heading & Subheading -->
+            <div class="space-y-4">
+              <img src="assets/images/media_1790151783643.jpg" alt="TRINETRA Official Logo" class="w-full max-w-[280px] sm:max-w-[360px] lg:max-w-[420px] h-auto object-contain mix-blend-multiply -ml-2">
+              <h1 class="sr-only">TRINETRA</h1>
+              <p class="text-xl sm:text-2xl font-bold text-navy-medium tracking-tight">
+                Hyperlocal Risk Prediction &amp; Early Warning System
+              </p>
+            </div>
+
+            <!-- Exact Description -->
+            <p class="text-base sm:text-lg text-slate-700 leading-relaxed font-normal max-w-xl">
+              Trinetra combines multi-source environmental data, XGBoost-based AI/ML prediction and physics-informed validation to deliver continuous, explainable and actionable flash-flood warnings at the village/ward level.
+            </p>
+
+            <!-- Buttons & Action -->
+            <div class="flex flex-wrap items-center gap-4 pt-2">
+              <a href="#how-it-works" class="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl bg-navy-dark hover:bg-navy-medium text-white font-bold text-sm transition-all shadow-md hover:shadow-lg group">
+                <span>See How It Works</span>
+                <i class="fa-solid fa-arrow-down text-cyan-bright transition-transform group-hover:translate-y-0.5"></i>
+              </a>
+
+              <a href="#case-study" class="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-white hover:bg-slate-50 text-navy-dark border border-slate-300 font-bold text-sm transition shadow-sm">
+                <i class="fa-solid fa-video text-navy-medium text-base"></i>
+                <span>Field Case Study</span>
+              </a>
+            </div>
+
+            <!-- Initiative Tags -->
+            <div class="pt-4 border-t border-slate-200/80 flex flex-wrap items-center gap-3">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-500">INITIATIVE TAGS:</span>
+              <span class="px-3.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-700 text-xs font-bold">SOFTWARE</span>
+              <span class="text-slate-300">•</span>
+              <span class="px-3.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-700 text-xs font-bold">DISASTER MANAGEMENT</span>
+              <span class="text-slate-300">•</span>
+              <span class="px-3.5 py-1 rounded-lg bg-blue-50 border border-blue-200 text-navy-medium text-xs font-extrabold">ENTANGLEX</span>
+            </div>
+
+          </div>
+
+          <!-- Hero Right Column: Interactive Risk Engine -->
+          <div class="lg:col-span-6">
+            <div class="bg-white rounded-2xl border border-slate-200/90 card-shadow p-6 sm:p-7 relative overflow-hidden">
+              
+              <!-- Card Header -->
+              <div class="flex flex-wrap items-center justify-between pb-4 border-b border-slate-100 gap-3">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-navy-dark text-cyan-bright flex items-center justify-center text-lg font-bold shadow-sm">
+                    <i class="fa-solid fa-microchip"></i>
+                  </div>
+                  <div>
+                    <h3 class="text-base font-extrabold text-navy-dark uppercase tracking-wide">TRINETRA AI Risk Engine</h3>
+                    <p class="text-xs text-slate-500 font-medium">Live Ward-Level Inference Telemetry</p>
+                  </div>
+                </div>
+
+                <!-- Scenario Buttons: Exactly Low | Moderate | High | Critical -->
+                <div class="flex items-center gap-2">
+                  <span class="text-xs text-slate-500 font-bold">Scenario:</span>
+                  <div class="inline-flex rounded-xl border border-slate-200 p-0.5 bg-slate-50">
+                    <button id="sim-low" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 transition-all">Low</button>
+                    <button id="sim-moderate" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 transition-all">Moderate</button>
+                    <button id="sim-high" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 transition-all">High</button>
+                    <button id="sim-critical" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-navy-dark text-white border border-blue-500 transition-all">Critical</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Multi-Source Data Inputs Grid -->
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 py-4">
+                
+                <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80">
+                  <div class="flex items-center gap-2 text-slate-600 text-xs font-semibold mb-1">
+                    <i class="fa-solid fa-cloud-showers-heavy text-blue-500 text-sm"></i>
+                    <span>Precipitation</span>
+                  </div>
+                  <div id="sim-val-precip" class="text-lg font-bold text-navy-dark font-mono">82 mm/hr</div>
+                  <div class="text-[11px] text-slate-500">IMD &amp; GPM Feeds</div>
+                </div>
+
+                <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80">
+                  <div class="flex items-center gap-2 text-slate-600 text-xs font-semibold mb-1">
+                    <i class="fa-solid fa-water text-cyan-accent text-sm"></i>
+                    <span>River Stage</span>
+                  </div>
+                  <div id="sim-val-river" class="text-lg font-bold text-navy-dark font-mono">+2.25 m</div>
+                  <div class="text-[11px] text-slate-500">ESP32 Ultrasonic</div>
+                </div>
+
+                <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80">
+                  <div class="flex items-center gap-2 text-slate-600 text-xs font-semibold mb-1">
+                    <i class="fa-solid fa-mountain text-emerald-600 text-sm"></i>
+                    <span>Soil Saturation</span>
+                  </div>
+                  <div id="sim-val-soil" class="text-lg font-bold text-navy-dark font-mono">96%</div>
+                  <div class="text-[11px] text-slate-500">Ground Probes</div>
+                </div>
+
+                <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80">
+                  <div class="flex items-center gap-2 text-slate-600 text-xs font-semibold mb-1">
+                    <i class="fa-solid fa-compass-drafting text-amber-500 text-sm"></i>
+                    <span>Catchment Slope</span>
+                  </div>
+                  <div id="sim-val-slope" class="text-lg font-bold text-navy-dark font-mono">350 m/km</div>
+                  <div class="text-[11px] text-slate-500">PostGIS DEM</div>
+                </div>
+
+              </div>
+
+              <!-- Central Risk Engine Pipeline Graphic -->
+              <div class="p-4 rounded-xl bg-navy-dark text-white relative overflow-hidden risk-card-float">
+                <div class="flex items-center justify-between mb-3">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-cyan-bright animate-pulse"></span>
+                    <span class="text-xs font-bold uppercase tracking-wider text-blue-200">XGBoost Risk Processing Node</span>
+                  </div>
+                  <span class="text-xs font-mono text-cyan-bright font-bold">Latency: 28ms</span>
+                </div>
+
+                <!-- Live Risk Gauge & Score -->
+                <div class="space-y-2">
+                  <div class="flex justify-between items-baseline">
+                    <span class="text-xs sm:text-sm text-slate-300 font-semibold">Computed Flash-Flood Risk Score:</span>
+                    <span id="sim-val-score" class="text-3xl sm:text-4xl font-extrabold text-white font-mono score-pulse">94%</span>
+                  </div>
+                  
+                  <!-- Bar Indicator -->
+                  <div class="w-full bg-slate-800 rounded-full h-3.5 overflow-hidden p-0.5 border border-slate-700">
+                    <div id="sim-score-bar" class="h-full rounded-full transition-all duration-1000 ease-out bg-red-500" style="width: 0%;"></div>
+                  </div>
+                </div>
+
+                <!-- Bottom Telemetry Badges -->
+                <div class="grid grid-cols-2 gap-3 mt-4 pt-3 border-t border-slate-800 text-xs sm:text-sm">
+                  <div>
+                    <span class="text-slate-400 block text-xs">Lead Time to Inundation:</span>
+                    <span id="sim-val-lead" class="font-bold text-cyan-bright font-mono text-sm sm:text-base">35 Minutes</span>
+                  </div>
+                  <div>
+                    <span class="text-slate-400 block text-xs">Physics Validation Gate:</span>
+                    <span id="sim-val-conf" class="font-bold text-emerald-400 font-mono text-sm sm:text-base">96.8% Confirmed</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Increased font size of "Automated Response Recommendation" -->
+              <div class="mt-4 p-4 rounded-xl bg-blue-50/80 border border-blue-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div class="flex items-center gap-3.5">
+                  <div class="w-10 h-10 rounded-xl bg-white border border-blue-200 text-navy-medium flex items-center justify-center text-lg shadow-sm flex-shrink-0">
+                    <i class="fa-solid fa-bullhorn text-cyan-bright"></i>
+                  </div>
+                  <div>
+                    <div class="text-sm sm:text-base font-bold text-slate-700 uppercase tracking-wide">
+                      Automated Response Recommendation
+                    </div>
+                    <div id="sim-val-action" class="text-sm sm:text-base font-extrabold text-navy-dark mt-0.5">
+                      Trigger Ward Siren #4 &amp; Evacuate Riverbank
+                    </div>
+                  </div>
+                </div>
+                <span id="sim-status-badge" class="self-start sm:self-center px-3 py-1.5 rounded-full text-xs font-bold tracking-wide border transition-all bg-red-50 text-red-700 border-red-300 pulse-red flex-shrink-0">
+                  CRITICAL FLASH SURGE
+                </span>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         SECTION 1: PROBLEM
+         Title: The warning gap is local.
+         ========================================================================= -->
+    <section id="problem" class="py-14 bg-canvas-light border-b border-slate-200/80">
+      <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Section Title & Narrative -->
+        <div class="max-w-3xl mb-10">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-blue-50 text-navy-medium text-xs font-bold uppercase tracking-wider mb-3">
+            <i class="fa-solid fa-triangle-exclamation text-amber-500 text-sm"></i>
+            Operational Challenge
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-navy-dark tracking-tight">
+            The warning gap is local.
+          </h2>
+          <p class="mt-3 text-base sm:text-lg text-slate-700 leading-relaxed font-normal">
+            Flash floods strike steep micro-basins within 30 to 90 minutes of cloudburst onset. While national meteorological agencies provide broad regional synoptics, the last-mile operational warning gap at the village and ward level remains unsolved.
+          </p>
+        </div>
+
+        <!-- Four Clear Problem Points with increased font size -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          
+          <!-- Point 1 -->
+          <div class="bg-white rounded-2xl p-6 border border-slate-200/90 card-shadow flex flex-col justify-between">
+            <div class="space-y-4">
+              <div class="w-14 h-14 rounded-2xl bg-blue-50 text-navy-medium flex items-center justify-center text-2xl font-bold border border-blue-100 shadow-sm">
+                <i class="fa-solid fa-map-location-dot text-cyan-bright"></i>
+              </div>
+              <h3 class="text-xl font-extrabold text-navy-dark">Lack of Localization</h3>
+              <p class="text-base sm:text-lg text-slate-700 leading-relaxed font-normal">
+                Regional meteorological alerts span hundreds of square kilometers. They fail to resolve ward- and village-scale micro-topography where rapid runoff creates sudden flash torrents.
+              </p>
+            </div>
+            <div class="mt-6 pt-4 border-t border-slate-100 text-xs font-bold text-slate-500 uppercase tracking-wider">
+              Issue #1 • Spatial Resolution
+            </div>
+          </div>
+
+          <!-- Point 2 -->
+          <div class="bg-white rounded-2xl p-6 border border-slate-200/90 card-shadow flex flex-col justify-between">
+            <div class="space-y-4">
+              <div class="w-14 h-14 rounded-2xl bg-blue-50 text-navy-medium flex items-center justify-center text-2xl font-bold border border-blue-100 shadow-sm">
+                <i class="fa-solid fa-network-wired text-cyan-bright"></i>
+              </div>
+              <h3 class="text-xl font-extrabold text-navy-dark">Fragmented Signals</h3>
+              <p class="text-base sm:text-lg text-slate-700 leading-relaxed font-normal">
+                Rainfall gauges, river stage sensors, upstream catchment runoff, and satellite precipitation feeds exist in disconnected institutional silos without real-time synchronization.
+              </p>
+            </div>
+            <div class="mt-6 pt-4 border-t border-slate-100 text-xs font-bold text-slate-500 uppercase tracking-wider">
+              Issue #2 • Data Silos
+            </div>
+          </div>
+
+          <!-- Point 3 -->
+          <div class="bg-white rounded-2xl p-6 border border-slate-200/90 card-shadow flex flex-col justify-between">
+            <div class="space-y-4">
+              <div class="w-14 h-14 rounded-2xl bg-blue-50 text-navy-medium flex items-center justify-center text-2xl font-bold border border-blue-100 shadow-sm">
+                <i class="fa-solid fa-file-waveform text-cyan-bright"></i>
+              </div>
+              <h3 class="text-xl font-extrabold text-navy-dark">Need for Interpretation</h3>
+              <p class="text-base sm:text-lg text-slate-700 leading-relaxed font-normal">
+                Emergency coordinators and local panchayat officials receive raw metrics (mm/hr, cumecs) rather than actionable tactical intelligence: who needs to evacuate and precisely by when.
+              </p>
+            </div>
+            <div class="mt-6 pt-4 border-t border-slate-100 text-xs font-bold text-slate-500 uppercase tracking-wider">
+              Issue #3 • Actionable Guidance
+            </div>
+          </div>
+
+          <!-- Point 4 -->
+          <div class="bg-white rounded-2xl p-6 border border-slate-200/90 card-shadow flex flex-col justify-between">
+            <div class="space-y-4">
+              <div class="w-14 h-14 rounded-2xl bg-blue-50 text-navy-medium flex items-center justify-center text-2xl font-bold border border-blue-100 shadow-sm">
+                <i class="fa-solid fa-bell-slash text-cyan-bright"></i>
+              </div>
+              <h3 class="text-xl font-extrabold text-navy-dark">Reliability &amp; False Alarms</h3>
+              <p class="text-base sm:text-lg text-slate-700 leading-relaxed font-normal">
+                Conventional static thresholds trigger either delayed alarms or chronic false alerts, creating warning fatigue among communities that leads people to disregard warnings.
+              </p>
+            </div>
+            <div class="mt-6 pt-4 border-t border-slate-100 text-xs font-bold text-slate-500 uppercase tracking-wider">
+              Issue #4 • Warning Fatigue
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         SECTION 2: SOLUTION – TRINETRA
+         The Six Pillars + Simple Flow (Reduced spacing, 6 points total)
+         ========================================================================= -->
+    <section id="solution" class="py-14 bg-white border-b border-slate-200/80">
+      <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Header -->
+        <div class="text-center max-w-3xl mx-auto mb-4">
+          <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-lg bg-blue-50 text-navy-medium text-xs font-bold uppercase tracking-wider mb-2.5">
+            <i class="fa-solid fa-sitemap text-cyan-bright text-base"></i>
+            Architectural Framework
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-navy-dark tracking-tight">
+            SOLUTION – TRINETRA
+          </h2>
+          <p class="mt-3 text-base sm:text-lg text-slate-700 leading-relaxed font-normal">
+            TRINETRA closes the warning gap by unifying real-time IoT river telemetry, high-resolution satellite precipitation, machine learning, and hydrodynamic physics into an automated early-warning loop.
+          </p>
+        </div>
+
+        <!-- The Six Pillars Grid (6 Points Total, Increased font size) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+          
+          <!-- Pillar 1 -->
+          <div class="p-6 rounded-2xl bg-canvas-light border border-slate-200/90 card-shadow flex flex-col justify-between">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-navy-dark text-cyan-bright flex items-center justify-center text-xl mb-4 font-bold shadow-sm">
+                1
+              </div>
+              <h3 class="text-lg font-extrabold text-navy-dark mb-2">Hyper-Local Risk Prediction</h3>
+              <p class="text-base sm:text-lg text-slate-700 leading-relaxed font-normal">
+                Calculates risk indices tailored down to specific municipal wards and rural village drainage corridors rather than district-wide averages.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-200/70 text-sm font-bold text-cyan-bright uppercase tracking-wider">
+              Village / Ward Resolution
+            </div>
+          </div>
+
+          <!-- Pillar 2 -->
+          <div class="p-6 rounded-2xl bg-canvas-light border border-slate-200/90 card-shadow flex flex-col justify-between">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-navy-dark text-cyan-bright flex items-center justify-center text-xl mb-4 font-bold shadow-sm">
+                2
+              </div>
+              <h3 class="text-lg font-extrabold text-navy-dark mb-2">Multi-Source Data Integration</h3>
+              <p class="text-base sm:text-lg text-slate-700 leading-relaxed font-normal">
+                Simultaneously ingests ground ultrasonic sensors, rain gauges, satellite precipitation grids, Doppler radar sweeps, and digital terrain elevation.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-200/70 text-sm font-bold text-cyan-bright uppercase tracking-wider">
+              Unified Telemetry Ingestion
+            </div>
+          </div>
+
+          <!-- Pillar 3 -->
+          <div class="p-6 rounded-2xl bg-canvas-light border border-slate-200/90 card-shadow flex flex-col justify-between">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-navy-dark text-cyan-bright flex items-center justify-center text-xl mb-4 font-bold shadow-sm">
+                3
+              </div>
+              <h3 class="text-lg font-extrabold text-navy-dark mb-2">AI/ML Risk Assessment (XGBoost)</h3>
+              <p class="text-base sm:text-lg text-slate-700 leading-relaxed font-normal">
+                Trained on historical flash flood dynamics using XGBoost for rapid, ultra-accurate non-linear classification with sub-second inference.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-200/70 text-sm font-bold text-cyan-bright uppercase tracking-wider">
+              XGBoost Decision Ensembles
+            </div>
+          </div>
+
+          <!-- Pillar 4 -->
+          <div class="p-6 rounded-2xl bg-canvas-light border border-slate-200/90 card-shadow flex flex-col justify-between">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-navy-dark text-cyan-bright flex items-center justify-center text-xl mb-4 font-bold shadow-sm">
+                4
+              </div>
+              <h3 class="text-lg font-extrabold text-navy-dark mb-2">Physics-Informed Validation</h3>
+              <p class="text-base sm:text-lg text-slate-700 leading-relaxed font-normal">
+                Cross-validates predictions with hydrological mass balance and Manning hydraulic roughness equations to eliminate hallucinations and false triggers.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-200/70 text-sm font-bold text-cyan-bright uppercase tracking-wider">
+              Hydraulic Gating Layer
+            </div>
+          </div>
+
+          <!-- Pillar 5 -->
+          <div class="p-6 rounded-2xl bg-canvas-light border border-slate-200/90 card-shadow flex flex-col justify-between">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-navy-dark text-cyan-bright flex items-center justify-center text-xl mb-4 font-bold shadow-sm">
+                5
+              </div>
+              <h3 class="text-lg font-extrabold text-navy-dark mb-2">Continuous Monitoring + Explainable Alerts</h3>
+              <p class="text-base sm:text-lg text-slate-700 leading-relaxed font-normal">
+                24/7 sliding window monitoring that generates explainable, transparent warnings with SHAP feature breakdown so responders understand the triggers.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-200/70 text-sm font-bold text-cyan-bright uppercase tracking-wider">
+              24/7 Sliding Window + SHAP
+            </div>
+          </div>
+
+          <!-- Pillar 6: Added 6th strong point as requested -->
+          <div class="p-6 rounded-2xl bg-canvas-light border border-slate-200/90 card-shadow flex flex-col justify-between">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-navy-dark text-cyan-bright flex items-center justify-center text-xl mb-4 font-bold shadow-sm">
+                6
+              </div>
+              <h3 class="text-lg font-extrabold text-navy-dark mb-2">Automated Multi-Channel Dispatch (CAP v1.2)</h3>
+              <p class="text-base sm:text-lg text-slate-700 leading-relaxed font-normal">
+                Autonomous sirens, cellular geo-targeted SMS, and direct API push to DDMA and NDRF control hubs without manual human latency or delays.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-200/70 text-sm font-bold text-cyan-bright uppercase tracking-wider">
+              Zero-Latency CAP v1.2 Broadcast
+            </div>
+          </div>
+
+        </div>
+
+        <!-- The Simple Flow Pipeline -->
+        <div class="bg-canvas-light rounded-2xl p-6 sm:p-8 border border-slate-200/90">
+          <div class="text-center mb-6">
+            <h4 class="text-sm font-extrabold text-navy-dark uppercase tracking-wider">The Operational End-to-End Pipeline</h4>
+            <p class="text-xs text-slate-500 font-medium">Continuous 6-stage autonomous flash-flood mitigation lifecycle</p>
+          </div>
+
+          <div class="grid grid-cols-2 md:grid-cols-6 gap-4 items-center">
+            
+            <div class="text-center p-3.5 rounded-xl bg-white border border-slate-200 shadow-sm">
+              <div class="w-10 h-10 mx-auto rounded-xl bg-blue-50 text-navy-medium flex items-center justify-center text-lg font-bold mb-2">
+                <i class="fa-solid fa-satellite-dish text-cyan-bright"></i>
+              </div>
+              <div class="text-sm font-bold text-navy-dark">Collect Data</div>
+              <div class="text-xs text-slate-500 mt-0.5">Sensors &amp; APIs</div>
+            </div>
+
+            <div class="text-center p-3.5 rounded-xl bg-white border border-slate-200 shadow-sm">
+              <div class="w-10 h-10 mx-auto rounded-xl bg-blue-50 text-navy-medium flex items-center justify-center text-lg font-bold mb-2">
+                <i class="fa-solid fa-brain text-cyan-bright"></i>
+              </div>
+              <div class="text-sm font-bold text-navy-dark">Predict Risk</div>
+              <div class="text-xs text-slate-500 mt-0.5">XGBoost ML</div>
+            </div>
+
+            <div class="text-center p-3.5 rounded-xl bg-white border border-slate-200 shadow-sm">
+              <div class="w-10 h-10 mx-auto rounded-xl bg-blue-50 text-navy-medium flex items-center justify-center text-lg font-bold mb-2">
+                <i class="fa-solid fa-calculator text-cyan-bright"></i>
+              </div>
+              <div class="text-sm font-bold text-navy-dark">Validate</div>
+              <div class="text-xs text-slate-500 mt-0.5">Hydraulic Physics</div>
+            </div>
+
+            <div class="text-center p-3.5 rounded-xl bg-white border border-slate-200 shadow-sm">
+              <div class="w-10 h-10 mx-auto rounded-xl bg-blue-50 text-navy-medium flex items-center justify-center text-lg font-bold mb-2">
+                <i class="fa-solid fa-gauge-high text-cyan-bright"></i>
+              </div>
+              <div class="text-sm font-bold text-navy-dark">Determine Risk</div>
+              <div class="text-xs text-slate-500 mt-0.5">Ward Severity Tier</div>
+            </div>
+
+            <div class="text-center p-3.5 rounded-xl bg-white border border-slate-200 shadow-sm">
+              <div class="w-10 h-10 mx-auto rounded-xl bg-blue-50 text-navy-medium flex items-center justify-center text-lg font-bold mb-2">
+                <i class="fa-solid fa-bell text-cyan-bright"></i>
+              </div>
+              <div class="text-sm font-bold text-navy-dark">Generate Alert</div>
+              <div class="text-xs text-slate-500 mt-0.5">SMS, App &amp; Siren</div>
+            </div>
+
+            <div class="text-center p-3.5 rounded-xl bg-white border border-slate-200 shadow-sm">
+              <div class="w-10 h-10 mx-auto rounded-xl bg-blue-50 text-navy-medium flex items-center justify-center text-lg font-bold mb-2">
+                <i class="fa-solid fa-rotate text-cyan-bright"></i>
+              </div>
+              <div class="text-sm font-bold text-navy-dark">Continuously Update</div>
+              <div class="text-xs text-slate-500 mt-0.5">3-Min Sliding Loop</div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         SECTION 3: HOW IT WORKS
+         Step-by-step process with icons + Upgraded Example Alert Card
+         ========================================================================= -->
+    <section id="how-it-works" class="py-14 bg-canvas-light border-b border-slate-200/80">
+      <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-3xl mx-auto mb-6">
+          <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-lg bg-blue-50 text-navy-medium text-xs font-bold uppercase tracking-wider mb-2.5">
+            <i class="fa-solid fa-gears text-cyan-bright text-sm"></i>
+            Operational Mechanics
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-navy-dark tracking-tight">
+            How It Works
+          </h2>
+          <p class="mt-3 text-base sm:text-lg text-slate-700 leading-relaxed font-normal">
+            From mountain-top sensor nodes to community loudspeakers, TRINETRA automates every step of localized risk calculation and dissemination.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+          
+          <!-- Step-by-Step Process (Left 7 Cols) -->
+          <div class="lg:col-span-7 space-y-5">
+            
+            <!-- Step 1 -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200/90 card-shadow flex gap-5">
+              <div class="w-14 h-14 rounded-2xl bg-navy-dark text-cyan-bright flex-shrink-0 flex items-center justify-center text-3xl font-bold shadow-md">
+                <i class="fa-solid fa-tower-broadcast"></i>
+              </div>
+              <div>
+                <span class="text-xs font-bold text-cyan-bright uppercase tracking-wider">Step 01</span>
+                <h3 class="text-2xl font-extrabold text-navy-dark mt-0.5">Edge Ingestion &amp; Sensor Telemetry</h3>
+                <p class="text-base sm:text-lg text-slate-700 mt-1.5 leading-relaxed font-normal">
+                  Low-power ESP32 nodes placed along catchment rivers transmit water stage levels (ultrasonic) and rainfall rates via lightweight MQTT packets every 180 seconds.
+                </p>
+              </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200/90 card-shadow flex gap-5">
+              <div class="w-14 h-14 rounded-2xl bg-navy-dark text-cyan-bright flex-shrink-0 flex items-center justify-center text-3xl font-bold shadow-md">
+                <i class="fa-solid fa-chart-line"></i>
+              </div>
+              <div>
+                <span class="text-xs font-bold text-cyan-bright uppercase tracking-wider">Step 02</span>
+                <h3 class="text-2xl font-extrabold text-navy-dark mt-0.5">Catchment Feature Synthesis</h3>
+                <p class="text-base sm:text-lg text-slate-700 mt-1.5 leading-relaxed font-normal">
+                  FastAPI backend combines sensor time-series with satellite radar precipitation grids, digital elevation terrain slopes, and 72-hour antecedent soil moisture.
+                </p>
+              </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200/90 card-shadow flex gap-5">
+              <div class="w-14 h-14 rounded-2xl bg-navy-dark text-cyan-bright flex-shrink-0 flex items-center justify-center text-3xl font-bold shadow-md">
+                <i class="fa-solid fa-microchip"></i>
+              </div>
+              <div>
+                <span class="text-xs font-bold text-cyan-bright uppercase tracking-wider">Step 03</span>
+                <h3 class="text-2xl font-extrabold text-navy-dark mt-0.5">XGBoost Risk Classification &amp; Physics Gating</h3>
+                <p class="text-base sm:text-lg text-slate-700 mt-1.5 leading-relaxed font-normal">
+                  High-speed gradient boosting calculates inundation probability. Output is instantly tested against hydrodynamic Manning roughness constraints to ensure physical plausibility.
+                </p>
+              </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200/90 card-shadow flex gap-5">
+              <div class="w-14 h-14 rounded-2xl bg-navy-dark text-cyan-bright flex-shrink-0 flex items-center justify-center text-3xl font-bold shadow-md">
+                <i class="fa-solid fa-bullhorn"></i>
+              </div>
+              <div>
+                <span class="text-xs font-bold text-cyan-bright uppercase tracking-wider">Step 04</span>
+                <h3 class="text-2xl font-extrabold text-navy-dark mt-0.5">Autonomous Multi-Tier Alert Broadcast</h3>
+                <p class="text-base sm:text-lg text-slate-700 mt-1.5 leading-relaxed font-normal">
+                  If risk exceeds ward threshold, CAP-standard emergency broadcasts trigger localized sirens, automated SMS to registered residents, and tactical notices to NDRF/DDMA control centers.
+                </p>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Example Alert Card (Right 5 Cols - Dynamic Motion) -->
+          <div class="lg:col-span-5">
+            <div class="bg-white rounded-2xl border border-slate-200/90 card-shadow overflow-hidden sticky top-28 relative transition-all duration-500 hover:shadow-[0_0_25px_rgba(43,140,255,0.25)] hover:border-cyan-bright/40">
+              
+              <!-- Subtle Radar Scan Motion Effect -->
+              <div class="radar-sweep-bar"></div>
+
+              <!-- Top Header & Tabs -->
+              <div class="bg-navy-dark p-4 text-white flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                  <i class="fa-solid fa-bell text-cyan-bright text-base"></i>
+                  <span class="text-xs font-bold uppercase tracking-wider">Production Alert Card Preview</span>
+                </div>
+                <div class="flex gap-1.5">
+                  <button id="tab-alert-red" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-red-600 text-white transition">Red Alert</button>
+                  <button id="tab-alert-orange" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Orange</button>
+                </div>
+              </div>
+
+              <!-- Alert Body -->
+              <div id="example-alert-card" class="p-6 space-y-4">
+                
+                <div class="flex items-center justify-between">
+                  <span class="alert-badge inline-flex items-center px-3.5 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider bg-red-600 text-white pulse-red">
+                    PRIORITY 1 • RED ALERT
+                  </span>
+                  <span class="alert-lead text-sm font-bold text-red-600 font-mono">
+                    42 Minutes to Peak Inundation
+                  </span>
+                </div>
+
+                <div>
+                  <h4 class="alert-ward text-xl font-extrabold text-navy-dark">
+                    Ward 14 — Alaknanda Confluence Corridor
+                  </h4>
+                  <p class="text-xs text-slate-500 mt-0.5">Geofence: Micro-Basin #04B • Confidence: <span class="alert-prob font-bold text-slate-700">94% Probability</span></p>
+                </div>
+
+                <!-- Explainable Factors (SHAP Drivers) -->
+                <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 space-y-2.5 text-xs sm:text-sm">
+                  <div class="font-bold text-slate-800 flex items-center gap-2 mb-2">
+                    <i class="fa-solid fa-magnifying-glass-chart text-cyan-bright text-base"></i>
+                    <span>Explainable Risk Drivers (Why this triggered):</span>
+                  </div>
+                  
+                  <div class="flex justify-between text-slate-700">
+                    <span>Precipitation Rate:</span>
+                    <span class="alert-precip font-bold text-navy-dark font-mono">76 mm/hr (Past 35 min cloudburst)</span>
+                  </div>
+                  <div class="flex justify-between text-slate-700">
+                    <span>River Stage Elevation:</span>
+                    <span class="alert-river font-bold text-red-600 font-mono">+2.10 m above critical danger level</span>
+                  </div>
+                  <div class="flex justify-between text-slate-700">
+                    <span>Antecedent Soil Buffer:</span>
+                    <span class="alert-soil font-bold text-navy-dark font-mono">95% (Fully saturated micro-basin)</span>
+                  </div>
+                </div>
+
+                <!-- Tactical Evacuation Guidance -->
+                <div class="p-4 rounded-xl bg-red-50 border border-red-200">
+                  <div class="text-xs font-bold text-red-700 uppercase tracking-wide flex items-center gap-2 mb-1.5">
+                    <i class="fa-solid fa-triangle-exclamation text-sm"></i>
+                    <span>Prescribed Action Protocol</span>
+                  </div>
+                  <p class="alert-action text-sm text-red-950 font-semibold leading-relaxed">
+                    IMMEDIATE EVACUATION: Direct residents of low-lying wards to designated shelter Zone B. Sound ward sirens #3 and #4 immediately.
+                  </p>
+                </div>
+
+                <!-- Distribution Confirmation -->
+                <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                  <span class="flex items-center gap-2 font-medium">
+                    <i class="fa-solid fa-circle-check text-emerald-500 text-sm"></i>
+                    <span class="alert-channels">Automated SMS (4,210 sent) • Local Siren Active • NDRF Control Room Dispatched</span>
+                  </span>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         SECTION 4: TECHNOLOGY
+         Replace React.js with Streamlit + Upgraded Grid
+         ========================================================================= -->
+    <section id="technology" class="py-14 bg-white border-b border-slate-200/80">
+      <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-3xl mx-auto mb-10">
+          <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-lg bg-blue-50 text-navy-medium text-xs font-bold uppercase tracking-wider mb-2.5">
+            <i class="fa-solid fa-code text-cyan-bright text-sm"></i>
+            Full-Stack Engineering
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-navy-dark tracking-tight">
+            Technology Stack
+          </h2>
+          <p class="mt-3 text-base sm:text-lg text-slate-700 leading-relaxed font-normal">
+            Engineered for high reliability, fault tolerance, and sub-second inference across edge sensors, microservices, and emergency dashboards.
+          </p>
+        </div>
+
+        <!-- 10 Tech Stack Cards Grid (Streamlit replacing React.js) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+          
+          <!-- 1. AI/ML -->
+          <div class="bg-white hover:bg-slate-50 rounded-xl p-6 border border-slate-200/90 card-shadow hover:shadow-lg transition-all duration-300 flex flex-col justify-between group">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider bg-blue-100 text-navy-dark">AI / ML</span>
+                <i class="fa-solid fa-diagram-project text-cyan-bright text-3xl group-hover:scale-110 transition-transform"></i>
+              </div>
+              <h3 class="text-lg font-extrabold text-navy-dark">XGBoost</h3>
+              <p class="text-sm text-slate-700 mt-2 leading-relaxed">
+                Gradient-boosted decision trees optimized for tabular environmental telemetry with SHAP explainability.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-200/80 text-xs font-bold text-slate-500 font-mono">
+              Inference &lt;35ms
+            </div>
+          </div>
+
+          <!-- 2. Backend -->
+          <div class="bg-white hover:bg-slate-50 rounded-xl p-6 border border-slate-200/90 card-shadow hover:shadow-lg transition-all duration-300 flex flex-col justify-between group">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider bg-blue-100 text-navy-dark">Backend</span>
+                <i class="fa-brands fa-python text-navy-medium text-3xl group-hover:scale-110 transition-transform"></i>
+              </div>
+              <h3 class="text-lg font-extrabold text-navy-dark">Python + FastAPI</h3>
+              <p class="text-sm text-slate-700 mt-2 leading-relaxed">
+                Asynchronous, high-throughput microservices architecture delivering real-time REST and WebSocket telemetry streams.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-200/80 text-xs font-bold text-slate-500 font-mono">
+              Async ASGI Core
+            </div>
+          </div>
+
+          <!-- 3. Frontend / Dashboard (Replaced React.js with Streamlit as requested) -->
+          <div class="bg-white hover:bg-slate-50 rounded-xl p-6 border border-slate-200/90 card-shadow hover:shadow-lg transition-all duration-300 flex flex-col justify-between group">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider bg-red-100 text-red-700">Dashboard</span>
+                <i class="fa-solid fa-chart-pie text-red-500 text-3xl group-hover:scale-110 transition-transform"></i>
+              </div>
+              <h3 class="text-lg font-extrabold text-navy-dark">Streamlit</h3>
+              <p class="text-sm text-slate-700 mt-2 leading-relaxed">
+                Interactive real-time Emergency Operations Center (EOC) console for risk monitoring, model explainability, and alerts.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-200/80 text-xs font-bold text-slate-500 font-mono">
+              Interactive EOC UI
+            </div>
+          </div>
+
+          <!-- 4. Database -->
+          <div class="bg-white hover:bg-slate-50 rounded-xl p-6 border border-slate-200/90 card-shadow hover:shadow-lg transition-all duration-300 flex flex-col justify-between group">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider bg-blue-100 text-navy-dark">Database</span>
+                <i class="fa-solid fa-database text-navy-medium text-3xl group-hover:scale-110 transition-transform"></i>
+              </div>
+              <h3 class="text-lg font-extrabold text-navy-dark">PostgreSQL</h3>
+              <p class="text-sm text-slate-700 mt-2 leading-relaxed">
+                Relational time-series store augmented with PostGIS for spatial polygons, catchment boundaries, and historical logs.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-200/80 text-xs font-bold text-slate-500 font-mono">
+              PostgreSQL + PostGIS
+            </div>
+          </div>
+
+          <!-- 5. IoT -->
+          <div class="bg-white hover:bg-slate-50 rounded-xl p-6 border border-slate-200/90 card-shadow hover:shadow-lg transition-all duration-300 flex flex-col justify-between group">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider bg-blue-100 text-navy-dark">IoT Edge</span>
+                <i class="fa-solid fa-microchip text-navy-medium text-3xl group-hover:scale-110 transition-transform"></i>
+              </div>
+              <h3 class="text-lg font-extrabold text-navy-dark">ESP32 + Sensors</h3>
+              <p class="text-sm text-slate-700 mt-2 leading-relaxed">
+                Ruggedized microcontroller nodes with ultrasonic water-depth transducers and tipping-bucket rain gauges.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-200/80 text-xs font-bold text-slate-500 font-mono">
+              Ultra Low-Power MCU
+            </div>
+          </div>
+
+          <!-- 6. Communication -->
+          <div class="bg-white hover:bg-slate-50 rounded-xl p-6 border border-slate-200/90 card-shadow hover:shadow-lg transition-all duration-300 flex flex-col justify-between group">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider bg-blue-100 text-navy-dark">Protocol</span>
+                <i class="fa-solid fa-tower-cell text-navy-medium text-3xl group-hover:scale-110 transition-transform"></i>
+              </div>
+              <h3 class="text-lg font-extrabold text-navy-dark">MQTT Protocol</h3>
+              <p class="text-sm text-slate-700 mt-2 leading-relaxed">
+                Lightweight publish/subscribe messaging engineered for low-bandwidth cellular and satellite uplinks in severe storms.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-200/80 text-xs font-bold text-slate-500 font-mono">
+              Resilient Pub/Sub
+            </div>
+          </div>
+
+          <!-- 7. Maps -->
+          <div class="bg-white hover:bg-slate-50 rounded-xl p-6 border border-slate-200/90 card-shadow hover:shadow-lg transition-all duration-300 flex flex-col justify-between group">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider bg-blue-100 text-navy-dark">GIS &amp; Maps</span>
+                <i class="fa-solid fa-map-location text-navy-medium text-3xl group-hover:scale-110 transition-transform"></i>
+              </div>
+              <h3 class="text-lg font-extrabold text-navy-dark">Leaflet + OSM</h3>
+              <p class="text-sm text-slate-700 mt-2 leading-relaxed">
+                Hardware-accelerated geospatial overlays for ward contours, hazard zones, elevation profiles, and sensor positions.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-200/80 text-xs font-bold text-slate-500 font-mono">
+              Open Geospatial Layers
+            </div>
+          </div>
+
+          <!-- 8. Data -->
+          <div class="bg-white hover:bg-slate-50 rounded-xl p-6 border border-slate-200/90 card-shadow hover:shadow-lg transition-all duration-300 flex flex-col justify-between group">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider bg-blue-100 text-navy-dark">Analytics</span>
+                <i class="fa-solid fa-chart-simple text-navy-medium text-3xl group-hover:scale-110 transition-transform"></i>
+              </div>
+              <h3 class="text-lg font-extrabold text-navy-dark">Pandas + NumPy</h3>
+              <p class="text-sm text-slate-700 mt-2 leading-relaxed">
+                High-performance vectorized rolling-window calculations, noise filtering, outlier detection, and data wrangling.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-200/80 text-xs font-bold text-slate-500 font-mono">
+              Vectorized Analytics
+            </div>
+          </div>
+
+          <!-- 9. Weather -->
+          <div class="bg-white hover:bg-slate-50 rounded-xl p-6 border border-slate-200/90 card-shadow hover:shadow-lg transition-all duration-300 flex flex-col justify-between group">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider bg-blue-100 text-navy-dark">Weather</span>
+                <i class="fa-solid fa-cloud-bolt text-navy-medium text-3xl group-hover:scale-110 transition-transform"></i>
+              </div>
+              <h3 class="text-lg font-extrabold text-navy-dark">Environmental APIs</h3>
+              <p class="text-sm text-slate-700 mt-2 leading-relaxed">
+                Multi-source atmospheric feeds including IMD radar, NASA GPM satellite precipitation, and Open-Meteo models.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-200/80 text-xs font-bold text-slate-500 font-mono">
+              Satellite &amp; Radar APIs
+            </div>
+          </div>
+
+          <!-- 10. Deployment -->
+          <div class="bg-white hover:bg-slate-50 rounded-xl p-6 border border-slate-200/90 card-shadow hover:shadow-lg transition-all duration-300 flex flex-col justify-between group">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider bg-blue-100 text-navy-dark">DevOps</span>
+                <i class="fa-brands fa-docker text-cyan-bright text-3xl group-hover:scale-110 transition-transform"></i>
+              </div>
+              <h3 class="text-lg font-extrabold text-navy-dark">Docker + GitHub</h3>
+              <p class="text-sm text-slate-700 mt-2 leading-relaxed">
+                Containerized microservices orchestration, automated unit test validation, and CI/CD deployment pipelines.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-200/80 text-xs font-bold text-slate-500 font-mono">
+              Container CI/CD
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         SECTION 5: CASE STUDY
+         Reduced empty space above Field Validation, larger font & improved icon
+         ========================================================================= -->
+    <section id="case-study" class="pt-6 pb-14 bg-canvas-light border-b border-slate-200/80">
+      <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="max-w-3xl mb-4">
+          <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-lg bg-blue-50 text-navy-medium text-sm sm:text-base font-extrabold uppercase tracking-wider mb-2.5">
+            <i class="fa-solid fa-clipboard-check text-cyan-bright text-lg"></i>
+            Field Validation
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-navy-dark tracking-tight">
+            Real voices. Real-world context.
+          </h2>
+          <p class="mt-3 text-base sm:text-lg text-slate-700 leading-relaxed font-normal">
+            To build a solution that works under extreme pressure, Team EntangleX conducted direct discussions with frontline rescue operators and emergency response personnel who handle mountain torrents and monsoon inundations on the ground.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          
+          <!-- Image Display (7 Cols) -->
+          <div class="lg:col-span-7">
+            <div class="relative bg-navy-dark rounded-2xl p-2.5 card-shadow border border-slate-300 overflow-hidden group">
+              
+              <!-- Video Call Header Bar -->
+              <div class="bg-slate-900/90 rounded-t-xl px-4 py-2.5 flex items-center justify-between text-xs text-slate-300 border-b border-slate-800">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>
+                  <span class="font-bold text-white text-xs sm:text-sm">Field Research Session • Tactical Rescue Personnel Consultation</span>
+                </div>
+                <div class="flex items-center gap-2 text-xs text-slate-400">
+                  <i class="fa-solid fa-lock text-cyan-bright"></i>
+                  <span>End-to-end Encrypted</span>
+                </div>
+              </div>
+
+              <!-- Main Case Study Photo -->
+              <div class="relative overflow-hidden rounded-b-xl bg-slate-950 aspect-[16/10]">
+                <img 
+                  id="case-study-img"
+                  src="assets/images/case-study.jpg" 
+                  alt="Discussion with Real Rescue Operator - Team EntangleX" 
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                >
+
+                <!-- Zoom Hover Button Overlay -->
+                <div class="absolute inset-0 bg-navy-dark/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <button id="case-study-zoom-btn" class="px-5 py-2.5 rounded-xl bg-white text-navy-dark text-xs font-bold uppercase tracking-wider shadow-lg flex items-center gap-2 hover:bg-slate-100 transition">
+                    <i class="fa-solid fa-expand"></i>
+                    <span>Expand High-Res View</span>
+                  </button>
+                </div>
+
+                <!-- Call participant caption pills -->
+                <div class="absolute bottom-3 left-3 bg-black/75 backdrop-blur-md px-3 py-1.5 rounded-lg text-xs text-white font-medium border border-white/20">
+                  <i class="fa-solid fa-user-shield text-cyan-bright mr-1.5"></i>
+                  Frontline Rescue Specialist &amp; Team EntangleX Researchers
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Key Learnings & Operational Insights (5 Cols) -->
+          <div class="lg:col-span-5 space-y-4">
+            
+            <div class="bg-white rounded-2xl p-6 border border-slate-200/90 card-shadow">
+              <h3 class="text-base font-extrabold text-navy-dark flex items-center gap-2 mb-2.5">
+                <i class="fa-solid fa-quote-left text-cyan-bright"></i>
+                Critical Operator Insights
+              </h3>
+              <p class="text-sm text-slate-700 leading-relaxed italic border-l-3 border-cyan-bright pl-3">
+                "When a cloudburst hits upstream, we don't have 3 hours—we have 40 minutes. If the warning only says 'Heavy Rainfall in District', nobody moves. But if it says 'Ward 12 riverbank will surge in 35 minutes', families pack up and evacuate immediately."
+              </p>
+            </div>
+
+            <div class="flex items-start gap-3.5 p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
+              <div class="w-10 h-10 rounded-xl bg-blue-50 text-navy-medium flex-shrink-0 flex items-center justify-center text-lg font-bold">
+                <i class="fa-solid fa-stopwatch text-cyan-bright"></i>
+              </div>
+              <div>
+                <h4 class="text-base font-bold text-navy-dark">The 45-Minute "Golden Evacuation Window"</h4>
+                <p class="text-sm text-slate-700 mt-1 leading-relaxed">
+                  Frontline teams confirmed that an automated lead time of 30-90 minutes reduces rescue deployment casualties by over 80% compared to reactionary post-inundation calls.
+                </p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3.5 p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
+              <div class="w-10 h-10 rounded-xl bg-blue-50 text-navy-medium flex-shrink-0 flex items-center justify-center text-lg font-bold">
+                <i class="fa-solid fa-walkie-talkie text-cyan-bright"></i>
+              </div>
+              <div>
+                <h4 class="text-base font-bold text-navy-dark">Zero-Jargon, Direct Action Playbooks</h4>
+                <p class="text-sm text-slate-700 mt-1 leading-relaxed">
+                  Civilian warnings must replace cumecs and decibars with clear, unambiguous instructions: exact high-ground shelter routes and specific evacuation deadlines.
+                </p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3.5 p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
+              <div class="w-10 h-10 rounded-xl bg-blue-50 text-navy-medium flex-shrink-0 flex items-center justify-center text-lg font-bold">
+                <i class="fa-solid fa-tower-broadcast text-cyan-bright"></i>
+              </div>
+              <div>
+                <h4 class="text-base font-bold text-navy-dark">Resilience Against Power Grid Failure</h4>
+                <p class="text-sm text-slate-700 mt-1 leading-relaxed">
+                  Severe storms frequently knock out cell towers. TRINETRA utilizes local sirens and solar-backed MQTT mesh to ensure alerts ring out even during utility blackouts.
+                </p>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Modal Lightbox for Case Study High-Res Viewing -->
+    <div id="case-study-modal" class="modal-overlay hidden-modal fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+      <div class="relative bg-white rounded-2xl max-w-4xl w-full overflow-hidden shadow-2xl">
+        <div class="bg-navy-dark px-6 py-4 flex items-center justify-between text-white">
+          <div class="flex items-center gap-2.5">
+            <span class="w-3 h-3 rounded-full bg-cyan-bright"></span>
+            <span class="text-sm font-bold">Field Interview Session • Team EntangleX &amp; Real Rescue Operator</span>
+          </div>
+          <button id="case-study-close-btn" class="text-slate-300 hover:text-white p-1 text-lg" aria-label="Close modal">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="p-4 bg-slate-900 flex justify-center">
+          <img src="assets/images/case-study.jpg" alt="Rescue Operator Interview" class="max-h-[75vh] w-auto object-contain rounded-lg">
+        </div>
+        <div class="p-4 bg-canvas-light text-xs sm:text-sm text-slate-700 flex justify-between items-center">
+          <span>Discussion on grassroots flood alerting, evacuation delays, and telemetry verification.</span>
+          <span class="font-bold text-navy-dark">Team EntangleX Fieldwork</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================================================================
+         SECTION 6: IMPACT
+         Four cards: Earlier Identification, More precise warnings, Better decisions, Community preparedness
+         ========================================================================= -->
+    <section id="impact" class="py-14 bg-white border-b border-slate-200/80">
+      <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-3xl mx-auto mb-10">
+          <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-lg bg-blue-50 text-navy-medium text-xs font-bold uppercase tracking-wider mb-2.5">
+            <i class="fa-solid fa-heart-pulse text-red-500 text-sm"></i>
+            Societal Value
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-navy-dark tracking-tight">
+            Measurable Disaster Impact
+          </h2>
+          <p class="mt-3 text-base sm:text-lg text-slate-700 leading-relaxed font-normal">
+            By shifting from delayed reactive response to continuous proactive intelligence, TRINETRA protects lives, livelihoods, and civic infrastructure.
+          </p>
+        </div>
+
+        <!-- 4 Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          
+          <!-- Card 1 -->
+          <div class="bg-canvas-light rounded-2xl p-7 border border-slate-200/90 card-shadow flex flex-col justify-between">
+            <div class="space-y-4">
+              <div class="w-14 h-14 rounded-2xl bg-blue-50 text-navy-medium flex items-center justify-center text-2xl font-bold border border-blue-100 shadow-sm">
+                <i class="fa-solid fa-clock-rotate-left text-cyan-bright"></i>
+              </div>
+              <h3 class="text-xl font-extrabold text-navy-dark">Earlier Identification</h3>
+              <p class="text-base text-slate-700 leading-relaxed font-normal">
+                Extends critical response lead times from 0–10 minutes of reactive panic to 30–90 minutes of calculated, orderly evacuation before water levels crest.
+              </p>
+            </div>
+            <div class="mt-6 pt-4 border-t border-slate-200/80 flex items-center gap-2 text-xs font-bold text-navy-medium">
+              <i class="fa-solid fa-arrow-trend-up text-emerald-500 text-sm"></i>
+              <span>+45 Min Average Lead Time</span>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="bg-canvas-light rounded-2xl p-7 border border-slate-200/90 card-shadow flex flex-col justify-between">
+            <div class="space-y-4">
+              <div class="w-14 h-14 rounded-2xl bg-blue-50 text-navy-medium flex items-center justify-center text-2xl font-bold border border-blue-100 shadow-sm">
+                <i class="fa-solid fa-crosshairs text-cyan-bright"></i>
+              </div>
+              <h3 class="text-xl font-extrabold text-navy-dark">More Precise Warnings</h3>
+              <p class="text-base text-slate-700 leading-relaxed font-normal">
+                Pinpoints vulnerable micro-wards, individual riverside hamlets, and specific bridge crossings instead of shutting down entire administrative districts.
+              </p>
+            </div>
+            <div class="mt-6 pt-4 border-t border-slate-200/80 flex items-center gap-2 text-xs font-bold text-navy-medium">
+              <i class="fa-solid fa-location-crosshairs text-emerald-500 text-sm"></i>
+              <span>Ward-Level Granularity</span>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="bg-canvas-light rounded-2xl p-7 border border-slate-200/90 card-shadow flex flex-col justify-between">
+            <div class="space-y-4">
+              <div class="w-14 h-14 rounded-2xl bg-blue-50 text-navy-medium flex items-center justify-center text-2xl font-bold border border-blue-100 shadow-sm">
+                <i class="fa-solid fa-chart-pie text-cyan-bright"></i>
+              </div>
+              <h3 class="text-xl font-extrabold text-navy-dark">Better Decisions</h3>
+              <p class="text-base text-slate-700 leading-relaxed font-normal">
+                Equips District Disaster Management Authorities (DDMA) with explainable AI confidence scores and clear tactical playbooks to allocate rescue resources wisely.
+              </p>
+            </div>
+            <div class="mt-6 pt-4 border-t border-slate-200/80 flex items-center gap-2 text-xs font-bold text-navy-medium">
+              <i class="fa-solid fa-shield-check text-emerald-500 text-sm"></i>
+              <span>Explainable AI Risk Scoring</span>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="bg-canvas-light rounded-2xl p-7 border border-slate-200/90 card-shadow flex flex-col justify-between">
+            <div class="space-y-4">
+              <div class="w-14 h-14 rounded-2xl bg-blue-50 text-navy-medium flex items-center justify-center text-2xl font-bold border border-blue-100 shadow-sm">
+                <i class="fa-solid fa-people-roof text-cyan-bright"></i>
+              </div>
+              <h3 class="text-xl font-extrabold text-navy-dark">Community Preparedness</h3>
+              <p class="text-base text-slate-700 leading-relaxed font-normal">
+                Builds resilient grassroots trust through local vernacular alerts, automated sirens, and panic-free evacuation guidance that villagers understand and respect.
+              </p>
+            </div>
+            <div class="mt-6 pt-4 border-t border-slate-200/80 flex items-center gap-2 text-xs font-bold text-navy-medium">
+              <i class="fa-solid fa-bullhorn text-emerald-500 text-sm"></i>
+              <span>Zero Jargon Warnings</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Quantitative Metric Banner -->
+        <div class="mt-10 p-8 rounded-2xl bg-navy-dark text-white card-shadow">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center divide-y md:divide-y-0 md:divide-x divide-slate-800">
+            <div class="pt-4 md:pt-0">
+              <div class="text-3xl sm:text-4xl font-extrabold text-cyan-bright font-mono">30-90m</div>
+              <div class="text-xs sm:text-sm text-slate-300 mt-1 uppercase font-bold tracking-wider">Advance Warning Lead-Time</div>
+            </div>
+            <div class="pt-4 md:pt-0">
+              <div class="text-3xl sm:text-4xl font-extrabold text-white font-mono">92.4%</div>
+              <div class="text-xs sm:text-sm text-slate-300 mt-1 uppercase font-bold tracking-wider">Historical Surge Accuracy</div>
+            </div>
+            <div class="pt-4 md:pt-0">
+              <div class="text-3xl sm:text-4xl font-extrabold text-cyan-bright font-mono">&lt; 500m</div>
+              <div class="text-xs sm:text-sm text-slate-300 mt-1 uppercase font-bold tracking-wider">Hyperlocal Spatial Target</div>
+            </div>
+            <div class="pt-4 md:pt-0">
+              <div class="text-3xl sm:text-4xl font-extrabold text-white font-mono">100%</div>
+              <div class="text-xs sm:text-sm text-slate-300 mt-1 uppercase font-bold tracking-wider">Physics Cross-Validation</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         SECTION 7: TEAM – EntangleX
+         SIH Patron + Co-Patrons layout
+         Team Leader (Anusha Karki): centered, larger & prominent, NO crown icon or "Patron" label.
+         Other members below in clean horizontal row / grid.
+         All real photos, NO placeholder/debug text.
+         ========================================================================= -->
+    <section id="team" class="py-14 bg-canvas-light border-b border-slate-200/80">
+      <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Section Header -->
+        <div class="text-center max-w-3xl mx-auto mb-10">
+          <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-lg bg-blue-50 text-navy-medium text-xs font-bold uppercase tracking-wider mb-2.5">
+            <i class="fa-solid fa-people-group text-cyan-bright text-sm"></i>
+            The Innovators
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-navy-dark tracking-tight">
+            Team EntangleX
+          </h2>
+          <p class="mt-3 text-base sm:text-lg text-slate-700 leading-relaxed font-normal">
+            Smart India Hackathon 2026 • Dedicated engineers and researchers uniting AI, hardware engineering, and disaster management.
+          </p>
+        </div>
+
+        <!-- ===================================================================
+             TEAM LEADER: ANUSHA KARKI (Centered, Large & Prominent, No Crown, No Patron)
+             =================================================================== -->
+        <div class="flex justify-center mb-12">
+          <div class="w-full max-w-lg team-leader-card rounded-2xl p-8 text-center relative overflow-hidden">
+            
+            <!-- Clean Lead Badge (No Crown, No Patron Label) -->
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-navy-dark text-cyan-bright text-xs font-bold uppercase tracking-wider mb-6 shadow-sm border border-cyan-bright/40">
+              <span class="w-2 h-2 rounded-full bg-cyan-bright"></span>
+              TEAM LEADER &amp; LEAD ARCHITECT
+            </div>
+
+            <!-- Prominent Avatar Frame with Real Photo (Full Quality, Uncompressed, Proper Framing) -->
+            <div class="w-48 h-64 sm:w-56 sm:h-72 mx-auto mb-5 relative flex items-center justify-center">
+              <div class="avatar-ring-leader w-full h-full p-1.5">
+                <img 
+                  id="img-anusha"
+                  src="assets/images/anusha-karki.jpg" 
+                  alt="Anusha Karki - Team Leader"
+                  class="leader-photo shadow-md"
+                >
+              </div>
+            </div>
+
+            <!-- Name & Role -->
+            <h3 class="text-2xl sm:text-3xl font-extrabold text-navy-dark tracking-tight font-sans">
+              Anusha Karki
+            </h3>
+            <p class="text-base font-bold text-navy-medium mt-1">
+              Team Leader, Researcher &amp; Frontend Developer
+            </p>
+            <p class="text-sm text-slate-600 mt-0.5 font-medium">
+              Rathinam Technical Campus
+            </p>
+
+            <div class="mt-4 pt-4 border-t border-slate-200/80 flex flex-wrap items-center justify-center gap-2">
+              <span class="px-3 py-1 rounded-lg bg-blue-50 text-navy-medium text-xs font-bold">Project Architecture</span>
+              <span class="px-3 py-1 rounded-lg bg-blue-50 text-navy-medium text-xs font-bold">Frontend UX</span>
+              <span class="px-3 py-1 rounded-lg bg-blue-50 text-navy-medium text-xs font-bold">Domain Research</span>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ===================================================================
+             OTHER TEAM MEMBERS (Clean Horizontal Row / Grid - Real Photos)
+             =================================================================== -->
+        <div>
+          <div class="text-center mb-8">
+            <span class="inline-block px-4 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 text-xs font-bold uppercase tracking-wider shadow-sm">
+              Core Engineering Team
+            </span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            
+            <!-- Member 1: Om Prakash Mandal -->
+            <div class="member-card bg-white rounded-2xl p-6 border border-slate-200/90 card-shadow text-center flex flex-col justify-between">
+              <div>
+                <div class="w-36 h-48 mx-auto mb-4 relative flex items-center justify-center">
+                  <div class="avatar-ring-member w-full h-full p-1">
+                    <img 
+                      id="img-om"
+                      src="assets/images/om-prakash-mandal.jpg" 
+                      alt="Om Prakash Mandal"
+                      class="member-photo"
+                    >
+                  </div>
+                </div>
+
+                <h4 class="text-lg font-bold text-navy-dark leading-snug">
+                  Om Prakash Mandal
+                </h4>
+                <p class="text-sm font-bold text-navy-medium mt-1">
+                  Backend Developer &amp; Pitcher
+                </p>
+                <p class="text-xs text-slate-600 mt-0.5">
+                  Rathinam Technical Campus
+                </p>
+              </div>
+
+              <div class="mt-4 pt-3 border-t border-slate-100">
+                <span class="inline-block px-2.5 py-1 rounded-md bg-blue-50 text-navy-medium text-xs font-bold">FastAPI &amp; DB Schemas</span>
+              </div>
+            </div>
+
+            <!-- Member 2: Ashish Kumar Shah Gupta -->
+            <div class="member-card bg-white rounded-2xl p-6 border border-slate-200/90 card-shadow text-center flex flex-col justify-between">
+              <div>
+                <div class="w-36 h-48 mx-auto mb-4 relative flex items-center justify-center">
+                  <div class="avatar-ring-member w-full h-full p-1">
+                    <img 
+                      id="img-ashish"
+                      src="assets/images/ashish-kumar-shah-gupta.jpg" 
+                      alt="Ashish Kumar Shah Gupta"
+                      class="member-photo"
+                    >
+                  </div>
+                </div>
+
+                <h4 class="text-lg font-bold text-navy-dark leading-snug">
+                  Ashish Kumar Shah Gupta
+                </h4>
+                <p class="text-sm font-bold text-navy-medium mt-1">
+                  AI/ML Developer &amp; Data Analyst
+                </p>
+                <p class="text-xs text-slate-600 mt-0.5">
+                  Rathinam Technical Campus
+                </p>
+              </div>
+
+              <div class="mt-4 pt-3 border-t border-slate-100">
+                <span class="inline-block px-2.5 py-1 rounded-md bg-blue-50 text-navy-medium text-xs font-bold">XGBoost &amp; Telemetry ML</span>
+              </div>
+            </div>
+
+            <!-- Member 3: Laxman Chaudhary -->
+            <div class="member-card bg-white rounded-2xl p-6 border border-slate-200/90 card-shadow text-center flex flex-col justify-between">
+              <div>
+                <div class="w-36 h-48 mx-auto mb-4 relative flex items-center justify-center">
+                  <div class="avatar-ring-member w-full h-full p-1">
+                    <img 
+                      id="img-laxman"
+                      src="assets/images/laxman-chaudhary.jpg" 
+                      alt="Laxman Chaudhary"
+                      class="member-photo"
+                    >
+                  </div>
+                </div>
+
+                <h4 class="text-lg font-bold text-navy-dark leading-snug">
+                  Laxman Chaudhary
+                </h4>
+                <p class="text-sm font-bold text-navy-medium mt-1">
+                  Testing &amp; Technical Support
+                </p>
+                <p class="text-xs text-slate-600 mt-0.5">
+                  Rathinam Technical Campus
+                </p>
+              </div>
+
+              <div class="mt-4 pt-3 border-t border-slate-100">
+                <span class="inline-block px-2.5 py-1 rounded-md bg-blue-50 text-navy-medium text-xs font-bold">QA &amp; Field Verification</span>
+              </div>
+            </div>
+
+            <!-- Member 4: Piruthvi Saran A -->
+            <div class="member-card bg-white rounded-2xl p-6 border border-slate-200/90 card-shadow text-center flex flex-col justify-between">
+              <div>
+                <div class="w-36 h-48 mx-auto mb-4 relative flex items-center justify-center">
+                  <div class="avatar-ring-member w-full h-full p-1">
+                    <img 
+                      id="img-piruthvi"
+                      src="assets/images/piruthvi-saran-a.jpg" 
+                      alt="Piruthvi Saran A"
+                      class="member-photo"
+                    >
+                  </div>
+                </div>
+
+                <h4 class="text-lg font-bold text-navy-dark leading-snug">
+                  Piruthvi Saran A
+                </h4>
+                <p class="text-sm font-bold text-navy-medium mt-1">
+                  Hardware &amp; IoT Integration
+                </p>
+                <p class="text-xs text-slate-600 mt-0.5">
+                  Rathinam Technical Campus
+                </p>
+              </div>
+
+              <div class="mt-4 pt-3 border-t border-slate-100">
+                <span class="inline-block px-2.5 py-1 rounded-md bg-blue-50 text-navy-medium text-xs font-bold">ESP32 &amp; MQTT Telemetry</span>
+              </div>
+            </div>
+
+            <!-- Member 5: Mukesh M -->
+            <div class="member-card bg-white rounded-2xl p-6 border border-slate-200/90 card-shadow text-center flex flex-col justify-between">
+              <div>
+                <div class="w-36 h-48 mx-auto mb-4 relative flex items-center justify-center">
+                  <div class="avatar-ring-member w-full h-full p-1">
+                    <img 
+                      id="img-mukesh"
+                      src="assets/images/mukesh-m.jpg" 
+                      alt="Mukesh M"
+                      class="member-photo"
+                    >
+                  </div>
+                </div>
+
+                <h4 class="text-lg font-bold text-navy-dark leading-snug">
+                  Mukesh M
+                </h4>
+                <p class="text-sm font-bold text-navy-medium mt-1">
+                  Hardware &amp; Sensor Systems
+                </p>
+                <p class="text-xs text-slate-600 mt-0.5">
+                  Rathinam Technical Campus
+                </p>
+              </div>
+
+              <div class="mt-4 pt-3 border-t border-slate-100">
+                <span class="inline-block px-2.5 py-1 rounded-md bg-blue-50 text-navy-medium text-xs font-bold">Ultrasonic &amp; Sensor Nodes</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         SECTION 8: MENTORS
+         Use the real photos uploaded for both mentors
+         ========================================================================= -->
+    <section id="mentors" class="py-14 bg-white border-b border-slate-200/80">
+      <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-3xl mx-auto mb-10">
+          <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-lg bg-blue-50 text-navy-medium text-xs font-bold uppercase tracking-wider mb-2.5">
+            <i class="fa-solid fa-graduation-cap text-cyan-bright text-sm"></i>
+            Institutional Guidance
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-navy-dark tracking-tight">
+            Project Mentors
+          </h2>
+          <p class="mt-3 text-base sm:text-lg text-slate-700 leading-relaxed font-normal">
+            Distinguished faculty leadership providing technical direction, competitive hackathon strategy, and domain expertise.
+          </p>
+        </div>
+
+        <!-- 2 Mentors Centered Grid (Real Photos) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+          
+          <!-- Mentor 1: Er. Gajendran Parthasarathi -->
+          <div class="bg-canvas-light rounded-2xl p-7 border border-slate-200/90 card-shadow text-center flex flex-col justify-between">
+            <div>
+              <div class="w-40 h-56 mx-auto mb-4 relative flex items-center justify-center">
+                <div class="avatar-ring-member w-full h-full p-1.5">
+                  <img 
+                    id="img-mentor-gajendran"
+                    src="assets/images/mentor-gajendran.jpg" 
+                    alt="Er. Gajendran Parthasarathi"
+                    class="member-photo"
+                  >
+                </div>
+              </div>
+
+              <div class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-blue-100 text-navy-dark text-xs font-bold uppercase tracking-wider mb-2">
+                Project Mentor
+              </div>
+
+              <h3 class="text-xl sm:text-2xl font-extrabold text-navy-dark">
+                Er. Gajendran Parthasarathi
+              </h3>
+              <p class="text-sm sm:text-base font-bold text-navy-medium mt-1">
+                Head – School of Design and Innovation
+              </p>
+              <p class="text-xs sm:text-sm text-slate-600 mt-0.5">
+                Rathinam Technical Campus
+              </p>
+            </div>
+
+
+          </div>
+
+          <!-- Mentor 2: Mr. K. Muthusamy -->
+          <div class="bg-canvas-light rounded-2xl p-7 border border-slate-200/90 card-shadow text-center flex flex-col justify-between">
+            <div>
+              <div class="w-40 h-56 mx-auto mb-4 relative flex items-center justify-center">
+                <div class="avatar-ring-member w-full h-full p-1.5">
+                  <img 
+                    id="img-mentor-muthusamy"
+                    src="assets/images/mentor-muthusamy.jpg" 
+                    alt="Mr. K. Muthusamy"
+                    class="member-photo"
+                  >
+                </div>
+              </div>
+
+              <div class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-blue-100 text-navy-dark text-xs font-bold uppercase tracking-wider mb-2">
+                Technical Mentor
+              </div>
+
+              <h3 class="text-xl sm:text-2xl font-extrabold text-navy-dark">
+                Mr. K. Muthusamy
+              </h3>
+              <p class="text-sm sm:text-base font-bold text-navy-medium mt-1">
+                Head – Technical Competitions and Hackathons
+              </p>
+              <p class="text-xs sm:text-sm text-slate-600 mt-0.5">
+                Rathinam Technical Campus
+              </p>
+            </div>
+
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- =========================================================================
+       CLEAN PROFESSIONAL FOOTER
+       (Organizing Committee / Patron / Co-Patrons duplicate block completely removed)
+       ========================================================================= -->
+  <footer class="bg-navy-dark text-white border-t border-slate-800">
+    <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center justify-between">
+        
+        <!-- Brand & Tagline -->
+        <div class="md:col-span-6 space-y-3">
+          <div class="flex items-center">
+            <div class="h-14 bg-white rounded-lg p-2 shadow-sm flex items-center justify-center">
+              <img src="assets/images/media_1790151783643.jpg" alt="TRINETRA Logo" class="h-full w-auto object-contain">
+            </div>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-400 max-w-md leading-relaxed">
+            Hyper-local flash-flood risk intelligence and automated early warning system developed by <strong class="text-white">Team EntangleX</strong> for the <strong class="text-white">Smart India Hackathon 2026</strong>.
+          </p>
+        </div>
+
+        <!-- Quick Links in exact order -->
+        <div class="md:col-span-6 flex flex-col md:items-end space-y-3 text-xs sm:text-sm text-slate-400">
+          <div class="flex flex-wrap gap-x-5 gap-y-2">
+            <a href="#problem" class="hover:text-cyan-bright transition font-medium">Problem</a>
+            <a href="#solution" class="hover:text-cyan-bright transition font-medium">Solution</a>
+            <a href="#how-it-works" class="hover:text-cyan-bright transition font-medium">How it works</a>
+            <a href="#technology" class="hover:text-cyan-bright transition font-medium">Technology</a>
+            <a href="#case-study" class="hover:text-cyan-bright transition font-medium">Case Study</a>
+            <a href="#impact" class="hover:text-cyan-bright transition font-medium">Impact</a>
+            <a href="#team" class="hover:text-cyan-bright transition font-medium">Team</a>
+            <a href="#mentors" class="hover:text-cyan-bright transition font-medium">Mentors</a>
+          </div>
+          <div class="text-xs text-slate-500 pt-2 border-t border-slate-800/80 w-full md:text-right">
+            © 2026 TRINETRA • Team EntangleX • Rathinam Technical Campus • Smart India Hackathon
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

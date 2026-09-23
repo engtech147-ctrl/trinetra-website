@@ -1,0 +1,223 @@
+/* TRINETRA Custom Stylesheet - Team EntangleX */
+:root {
+  --navy-dark: #0A1F44;
+  --navy-medium: #1E4D8C;
+  --navy-subtle: #0f2b5c;
+  --blue-bright: #2B8CFF;
+  --blue-cyan: #00B4D8;
+  --blue-soft: #E8F2FF;
+  --blue-ice: #F0F6FF;
+  --bg-light: #F7F9FC;
+  --bg-card: #FFFFFF;
+  --border-subtle: #E2E8F0;
+  --border-blue: #D6E8FE;
+  --text-main: #0A1F44;
+  --text-body: #334155;
+  --text-muted: #64748B;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 86px;
+}
+
+body {
+  background: linear-gradient(145deg, #F4F8FF 0%, #EEF5FF 50%, #E8F1FF 100%);
+  background-attachment: fixed;
+  color: var(--text-body);
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow-x: hidden;
+}
+
+
+
+/* Subtle Topographic / Water Grid Ambient Background */
+.bg-topo-pattern {
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(220, 233, 250, 0.8) 0%, transparent 45%),
+    radial-gradient(circle at 85% 30%, rgba(220, 233, 250, 0.5) 0%, transparent 50%);
+  background-size: cover;
+}
+
+/* Soft refined card shadows */
+.card-shadow {
+  box-shadow: 0 4px 18px -2px rgba(10, 31, 68, 0.05), 0 2px 6px -1px rgba(10, 31, 68, 0.03);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-shadow:hover {
+  box-shadow: 0 14px 34px -4px rgba(10, 31, 68, 0.09), 0 4px 12px -2px rgba(10, 31, 68, 0.05);
+  transform: translateY(-3px);
+  border-color: #CBD5E1;
+}
+
+/* SIH Patron Special Card Styling (Centered & Prominent) */
+.team-leader-card {
+  position: relative;
+  background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFD 100%);
+  border: 1.5px solid #CFE2FE;
+  box-shadow: 0 12px 36px -4px rgba(30, 77, 140, 0.08), 0 4px 14px -2px rgba(10, 31, 68, 0.04);
+}
+
+/* AI Risk Engine Animations */
+@keyframes score-glow {
+  0% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.15); }
+  100% { text-shadow: 0 0 25px rgba(255, 255, 255, 0.45); }
+}
+.score-pulse {
+  animation: score-glow 3s infinite alternate ease-in-out;
+}
+
+@keyframes card-float {
+  0%, 100% { transform: translateY(0); box-shadow: 0 8px 24px -4px rgba(10, 31, 68, 0.12), 0 4px 10px -2px rgba(10, 31, 68, 0.06); }
+  50% { transform: translateY(-3px); box-shadow: 0 14px 32px -4px rgba(10, 31, 68, 0.18), 0 6px 14px -2px rgba(10, 31, 68, 0.08); }
+}
+.risk-card-float {
+  animation: card-float 5s infinite ease-in-out;
+  transition: all 0.5s ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .score-pulse, .risk-card-float {
+    animation: none;
+    transform: none;
+  }
+}
+
+.team-leader-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70%;
+  height: 3.5px;
+  background: linear-gradient(90deg, transparent, #2B8CFF, #1E4D8C, transparent);
+  border-radius: 9999px;
+}
+
+/* Avatar Ring Styles */
+.avatar-ring-leader {
+  position: relative;
+  border-radius: 1.5rem;
+  padding: 6px;
+  background: linear-gradient(135deg, #2B8CFF, #1E4D8C, #0A1F44);
+  box-shadow: 0 10px 28px -4px rgba(43, 140, 255, 0.28);
+  transition: transform 0.3s ease;
+}
+
+.avatar-ring-leader:hover {
+  transform: scale(1.02);
+}
+
+.avatar-ring-member {
+  position: relative;
+  border-radius: 1rem;
+  padding: 4px;
+  background: linear-gradient(135deg, #60A5FA, #1E4D8C);
+  box-shadow: 0 6px 18px -2px rgba(30, 77, 140, 0.16);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.member-card:hover .avatar-ring-member {
+  transform: scale(1.04);
+  box-shadow: 0 8px 22px -2px rgba(43, 140, 255, 0.32);
+}
+
+/* Photo containment - Full Quality, Unstretched, Proper Framing */
+.member-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  border-radius: 0.75rem;
+  background-color: transparent;
+  display: block;
+}
+
+.leader-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  border-radius: 1.25rem;
+  background-color: transparent;
+  display: block;
+}
+
+/* Active navigation link */
+.nav-link {
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.nav-link.active {
+  color: #2B8CFF !important;
+  font-weight: 700;
+}
+
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 2.5px;
+  background: #2B8CFF;
+  border-radius: 2px;
+}
+
+/* Production Alert Card Radar Scan Motion */
+@keyframes radarSweep {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.7;
+  }
+  80% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(300%);
+    opacity: 0;
+  }
+}
+
+.radar-sweep-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: linear-gradient(180deg, rgba(43, 140, 255, 0.15) 0%, rgba(43, 140, 255, 0) 100%);
+  pointer-events: none;
+  animation: radarSweep 4s ease-in-out infinite;
+}
+
+/* Subtle pulse animation for emergency / alert status */
+@keyframes alertPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 12px rgba(239, 68, 68, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+}
+
+.pulse-red {
+  animation: alertPulse 2s infinite;
+}
+
+/* Lightbox Modal */
+.modal-overlay {
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.modal-overlay.hidden-modal {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
